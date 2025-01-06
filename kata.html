@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關注點分離kata</title>
+</head>
+<body>
+    <!-- app, ul, inputByAdd, buttonByAdd -->
+    <div id='app'>
+        <ul></ul>
+        <input id="inputByAdd">
+        <button type="button" id="buttonByAdd">新增</button>
+    </div>
+
+   <script>
+       console.log('test')
+       const data = [
+           {
+               id:1,
+               content:'我是卡斯柏'
+           },
+            {
+               id:2,
+               content:'我是小明'
+           }
+       ]
+       //dom
+       const app = document.querySelector("#app ul");
+       const inputByAdd = document.querySelector("#inputByAdd");
+       const buttonByAdd = document.querySelector('#buttonByAdd');
+       //render
+       function render(){
+           let template = ``;
+           data.forEach((item)=>{
+               template += `<li>${item.content}
+                <button type="button" class="btnsbyRemove"
+                data-id=${item.id}>刪除</button></li>`;
+           });
+           app.innerHTML = template;
+           const btnsbyRemove = document.querySelectorAll('.btnsbyRemove');
+           btnsbyRemove.forEach((item)=>{
+               item.addEventListener('click',(e)=>{
+                   console.log(e.target.dataset.id);
+                   removeItem(e.target.dataset.id)
+               })
+           })
+
+  
+       };
+
+       render();
+
+
+       //addItem
+       function addItem(content){
+           data.push({
+               id : data.length ++,
+               content
+           });
+           render();
+       }
+
+       //removeItem 按鈕
+       function removeItem(id){
+           const index = data.findIndex((item)=>item.id == id);
+           console.log(index);
+           data.splice(index,1);
+           render();
+       }
+
+  
+
+
+//監聽
+buttonByAdd.addEventListener('click',()=>{
+    const value = inputByAdd.value;
+    addItem(value);
+})
+
+   </script>
+</body>
+</html>
